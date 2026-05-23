@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retail Analytics Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0f1117;
+            color: #e8eaf0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* ── Navbar ── */
+        .navbar {
+            background-color: #1a1d27 !important;
+            border-bottom: 2px solid #3498db;
+        }
+        .navbar-brand {
+            color: #3498db !important;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+        .nav-link {
+            color: #e8eaf0 !important;
+            margin: 0 5px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        .nav-link:hover {
+            background-color: #3498db !important;
+            color: white !important;
+        }
+        .nav-link.active {
+            background-color: #3498db !important;
+            color: white !important;
+        }
+
+        /* ── KPI Cards ── */
+        .kpi-card {
+            background-color: #1a1d27;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #2c2f3f;
+            transition: transform 0.3s;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            border-color: #3498db;
+        }
+        .kpi-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 0;
+        }
+        .kpi-label {
+            font-size: 0.8rem;
+            color: #bdc3c7;
+            margin: 5px 0 0 0;
+        }
+
+        /* ── Section Headers ── */
+        .section-header {
+            color: #3498db;
+            font-weight: bold;
+            font-size: 1.3rem;
+            border-left: 4px solid #3498db;
+            padding-left: 12px;
+            margin: 30px 0 15px 0;
+        }
+
+        /* ── Tables ── */
+        .table-container {
+            background-color: #1a1d27;
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid #2c2f3f;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        .table {
+            color: #e8eaf0 !important;
+            font-size: 0.85rem;
+        }
+        .table thead th {
+            background-color: #2c3e50 !important;
+            color: white !important;
+            border-color: #2c2f3f !important;
+            text-align: center;
+        }
+        .table tbody tr:hover {
+            background-color: #2c2f3f !important;
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #222535 !important;
+        }
+
+        /* ── Plot Cards ── */
+        .plot-card {
+            background-color: #1a1d27;
+            border-radius: 10px;
+            border: 1px solid #2c2f3f;
+            overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .plot-card:hover {
+            transform: translateY(-5px);
+            border-color: #3498db;
+        }
+        .plot-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+        .plot-card-body {
+            padding: 10px;
+            text-align: center;
+        }
+        .plot-card-title {
+            font-size: 0.75rem;
+            color: #bdc3c7;
+            margin: 0;
+        }
+
+        /* ── Report Cards ── */
+        .report-card {
+            background-color: #1a1d27;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #2c2f3f;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+        .report-card:hover {
+            border-color: #3498db;
+        }
+        .report-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+        }
+        .report-name {
+            font-size: 0.9rem;
+            color: #e8eaf0;
+            margin: 0;
+        }
+        .report-type {
+            font-size: 0.75rem;
+            color: #bdc3c7;
+            margin: 3px 0 0 0;
+        }
+
+        /* ── Modal ── */
+        .modal-content {
+            background-color: #1a1d27;
+            border: 1px solid #3498db;
+        }
+        .modal-header {
+            border-bottom: 1px solid #2c2f3f;
+        }
+        .modal-title {
+            color: #3498db;
+        }
+        .btn-close {
+            filter: invert(1);
+        }
+
+        /* ── Hero Section ── */
+        .hero {
+            background: linear-gradient(135deg, #1a1d27, #0f1117);
+            border-bottom: 1px solid #2c2f3f;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        .hero h1 {
+            color: #3498db;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .hero p {
+            color: #bdc3c7;
+            font-size: 1rem;
+        }
+
+        /* ── Tab Pills ── */
+        .nav-pills .nav-link {
+            color: #e8eaf0 !important;
+            background-color: #1a1d27;
+            border: 1px solid #2c2f3f;
+            margin: 3px;
+        }
+        .nav-pills .nav-link.active {
+            background-color: #3498db !important;
+            border-color: #3498db;
+        }
+
+        /* ── Scrollbar ── */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1117;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3498db;
+            border-radius: 3px;
+        }
+
+        /* ── Footer ── */
+        .footer {
+            background-color: #1a1d27;
+            border-top: 1px solid #2c2f3f;
+            padding: 20px 0;
+            margin-top: 50px;
+            text-align: center;
+            color: #bdc3c7;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Navbar ─────────────────────────────────────────────────────────── -->
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="bi bi-bar-chart-fill me-2"></i>
+            Retail Analytics
+        </a>
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link {% if not page %}active{% endif %}"
+                       href="/">
+                        <i class="bi bi-house me-1"></i>Overview
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if page == 'sql' %}active{% endif %}"
+                       href="/sql">
+                        <i class="bi bi-database me-1"></i>SQL Analysis
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if page == 'plots' %}active{% endif %}"
+                       href="/plots">
+                        <i class="bi bi-graph-up me-1"></i>Plots
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if page == 'reports' %}active{% endif %}"
+                       href="/reports">
+                        <i class="bi bi-file-earmark-text me-1"></i>Reports
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- ── Hero ───────────────────────────────────────────────────────────── -->
+<div class="hero">
+    <div class="container">
+        <h1>
+            <i class="bi bi-shop me-2"></i>
+            Retail Analytics Dashboard
+        </h1>
+        <p>
+            Brazilian E-Commerce (Olist) — End-to-End Business Intelligence
+            | 99,441 Orders | 96,478 Customers | 3,095 Sellers
+        </p>
+        <div>
+            <span class="badge bg-primary me-2">Python 3.11</span>
+            <span class="badge bg-success me-2">SQLite</span>
+            <span class="badge bg-warning text-dark me-2">Pandas</span>
+            <span class="badge bg-info text-dark me-2">Scikit-learn</span>
+            <span class="badge bg-danger me-2">Prophet</span>
+            <span class="badge bg-secondary me-2">MLxtend</span>
+        </div>
+    </div>
+</div>
+
+<div class="container pb-5">
+
+    <!-- ── OVERVIEW PAGE ──────────────────────────────────────────────── -->
+    {% if not page %}
+
+        <!-- KPI Cards -->
+        <h2 class="section-header">
+            <i class="bi bi-speedometer2 me-2"></i>
+            Business KPIs
+        </h2>
+        <div class="row g-3 mb-4">
+            {% set kpi_colors = [
+                '#3498db', '#2ecc71', '#f39c12', '#9b59b6',
+                '#e74c3c', '#2ecc71', '#f39c12', '#3498db'
+            ] %}
+            {% set kpi_icons = [
+                'cart-check', 'currency-dollar', 'receipt',
+                'people', 'shop', 'star', 'truck', 'box'
+            ] %}
+            {% for key, value in kpis.items() %}
+            <div class="col-6 col-md-3">
+                <div class="kpi-card">
+                    <p class="kpi-value"
+                       style="color: {{ kpi_colors[loop.index0] }}">
+                        {{ value }}
+                    </p>
+                    <p class="kpi-label">
+                        {{ key.replace('_', ' ').title() }}
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Monthly Revenue Table -->
+        <h2 class="section-header">
+            <i class="bi bi-calendar-month me-2"></i>
+            Monthly Revenue
+        </h2>
+        <div class="table-container">
+            {{ monthly_table | safe }}
+        </div>
+
+        <!-- Category Table -->
+        <h2 class="section-header">
+            <i class="bi bi-tags me-2"></i>
+            Top 10 Categories
+        </h2>
+        <div class="table-container">
+            {{ category_table | safe }}
+        </div>
+
+        <!-- Quick Plot Preview -->
+        {% if plots %}
+        <h2 class="section-header">
+            <i class="bi bi-images me-2"></i>
+            Latest Plots
+        </h2>
+        <div class="row">
+            {% for plot in plots[:8] %}
+            <div class="col-6 col-md-3">
+                <div class="plot-card"
+                     onclick="showPlot('{{ plot }}')">
+                    <img src="/plot/{{ plot }}"
+                         alt="{{ plot }}"
+                         loading="lazy">
+                    <div class="plot-card-body">
+                        <p class="plot-card-title">
+                            {{ plot.replace('_', ' ').replace('.png', '') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-3">
+            <a href="/plots" class="btn btn-outline-primary">
+                <i class="bi bi-grid me-2"></i>
+                View All Plots
+            </a>
+        </div>
+        {% endif %}
+
+    {% endif %}
+
+    <!-- ── SQL PAGE ───────────────────────────────────────────────────── -->
+    {% if page == 'sql' %}
+
+        <h2 class="section-header">
+            <i class="bi bi-database me-2"></i>
+            SQL Analysis Results
+        </h2>
+
+        <!-- Tab Navigation -->
+        <ul class="nav nav-pills mb-4 flex-wrap" id="sqlTabs">
+            {% for name in tables.keys() %}
+            <li class="nav-item">
+                <button class="nav-link {% if loop.first %}active{% endif %}"
+                        onclick="showTable('{{ loop.index }}')">
+                    {{ name }}
+                </button>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Tables -->
+        {% for name, table_html in tables.items() %}
+        <div id="table-{{ loop.index }}"
+             class="table-section"
+             style="display: {% if loop.first %}block{% else %}none{% endif %}">
+            <h5 style="color: #3498db; margin-bottom: 10px;">
+                <i class="bi bi-table me-2"></i>{{ name }}
+            </h5>
+            <div class="table-container">
+                {{ table_html | safe }}
+            </div>
+        </div>
+        {% endfor %}
+
+    {% endif %}
+
+    <!-- ── PLOTS PAGE ─────────────────────────────────────────────────── -->
+    {% if page == 'plots' %}
+
+        <h2 class="section-header">
+            <i class="bi bi-graph-up me-2"></i>
+            All Visualizations
+        </h2>
+
+        <!-- Filter buttons -->
+        <div class="mb-4">
+            <button class="btn btn-sm btn-outline-primary me-2 mb-2"
+                    onclick="filterPlots('all')">
+                All
+            </button>
+            <button class="btn btn-sm btn-outline-success me-2 mb-2"
+                    onclick="filterPlots('rfm')">
+                RFM
+            </button>
+            <button class="btn btn-sm btn-outline-warning me-2 mb-2"
+                    onclick="filterPlots('cohort')">
+                Cohort
+            </button>
+            <button class="btn btn-sm btn-outline-danger me-2 mb-2"
+                    onclick="filterPlots('forecast')">
+                Forecast
+            </button>
+            <button class="btn btn-sm btn-outline-info me-2 mb-2"
+                    onclick="filterPlots('seller')">
+                Seller
+            </button>
+            <button class="btn btn-sm btn-outline-secondary me-2 mb-2"
+                    onclick="filterPlots('churn')">
+                Churn
+            </button>
+            <button class="btn btn-sm btn-outline-light me-2 mb-2"
+                    onclick="filterPlots('market')">
+                Market Basket
+            </button>
+            <button class="btn btn-sm btn-outline-primary me-2 mb-2"
+                    onclick="filterPlots('viz')">
+                Dashboards
+            </button>
+        </div>
+
+        <div class="row" id="plotsGrid">
+            {% for plot in plots %}
+            <div class="col-6 col-md-4 col-lg-3 plot-item"
+                 data-name="{{ plot }}">
+                <div class="plot-card"
+                     onclick="showPlot('{{ plot }}')">
+                    <img src="/plot/{{ plot }}"
+                         alt="{{ plot }}"
+                         loading="lazy">
+                    <div class="plot-card-body">
+                        <p class="plot-card-title">
+                            {{ plot.replace('_', ' ').replace('.png', '') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    {% endif %}
+
+    <!-- ── REPORTS PAGE ───────────────────────────────────────────────── -->
+    {% if page == 'reports' %}
+
+        <h2 class="section-header">
+            <i class="bi bi-file-earmark-text me-2"></i>
+            Download Reports
+        </h2>
+
+        {% for file in report_files %}
+        <div class="report-card">
+            <div class="d-flex align-items-center">
+                {% if file.endswith('.pdf') %}
+                    <span class="report-icon text-danger">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                    </span>
+                {% elif file.endswith('.xlsx') %}
+                    <span class="report-icon text-success">
+                        <i class="bi bi-file-earmark-excel"></i>
+                    </span>
+                {% else %}
+                    <span class="report-icon text-info">
+                        <i class="bi bi-file-earmark-spreadsheet"></i>
+                    </span>
+                {% endif %}
+                <div>
+                    <p class="report-name">{{ file }}</p>
+                    <p class="report-type">
+                        {% if file.endswith('.pdf') %}PDF Report
+                        {% elif file.endswith('.xlsx') %}Excel Workbook
+                        {% else %}CSV Data File
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <a href="/download/{{ file }}"
+               class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-download me-1"></i>
+                Download
+            </a>
+        </div>
+        {% endfor %}
+
+    {% endif %}
+
+</div>
+
+<!-- ── Plot Modal ──────────────────────────────────────────────────────── -->
+<div class="modal fade" id="plotModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="plotModalTitle">Plot</h5>
+                <button type="button" class="btn-close"
+                        data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center p-2">
+                <img id="plotModalImg"
+                     src=""
+                     alt="Plot"
+                     style="max-width: 100%; height: auto;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── Footer ─────────────────────────────────────────────────────────── -->
+<div class="footer">
+    <p>
+        Retail Analytics — Brazilian E-Commerce (Olist)
+        | Built with Python 3.11, Flask, SQLite
+        | 
+        <a href="https://github.com/aka261/Retail-Analytics---Olist-Brazilian-Ecommerce-"
+           style="color: #3498db;"
+           target="_blank">
+            <i class="bi bi-github me-1"></i>GitHub
+        </a>
+    </p>
+</div>
+
+<!-- ── Scripts ────────────────────────────────────────────────────────── -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Show plot in modal
+    function showPlot(filename) {
+        document.getElementById("plotModalImg").src = "/plot/" + filename;
+        document.getElementById("plotModalTitle").textContent =
+            filename.replace(/_/g, " ").replace(".png", "");
+        new bootstrap.Modal(
+            document.getElementById("plotModal")
+        ).show();
+    }
+
+    // Show SQL table
+    function showTable(index) {
+        document.querySelectorAll(".table-section").forEach(t => {
+            t.style.display = "none";
+        });
+        document.querySelectorAll(".nav-pills .nav-link").forEach(b => {
+            b.classList.remove("active");
+        });
+        document.getElementById("table-" + index).style.display = "block";
+        event.target.classList.add("active");
+    }
+
+    // Filter plots by category
+    function filterPlots(category) {
+        document.querySelectorAll(".plot-item").forEach(item => {
+            const name = item.getAttribute("data-name");
+            if (category === "all" || name.includes(category)) {
+                item.style.display = "block";
+            } else {
+                item.style.display = "none";
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
