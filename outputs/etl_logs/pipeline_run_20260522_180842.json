@@ -1,0 +1,39 @@
+{
+    "status": "SUCCESS",
+    "started_at": "2026-05-22 18:07:25",
+    "completed_at": "2026-05-22 18:08:42",
+    "total_time_sec": 76.62,
+    "phases": {
+        "Extract": {
+            "success": true,
+            "time_sec": 5.61,
+            "rows": 1550922,
+            "files": 9
+        },
+        "Transform": {
+            "success": true,
+            "time_sec": 20.37,
+            "master_rows": 113425,
+            "master_cols": 60,
+            "star_tables": 5
+        },
+        "Load": {
+            "success": true,
+            "time_sec": 50.64,
+            "tables_loaded": 14
+        }
+    },
+    "data_summary": {
+        "raw_files_loaded": 9,
+        "total_raw_rows": 1550922,
+        "master_dataset_rows": 113425,
+        "master_dataset_cols": 60,
+        "star_schema_tables": 5,
+        "database_tables_loaded": 14,
+        "orders": 99441,
+        "order_items": 112650,
+        "customers": 99441,
+        "products": 32951,
+        "sellers": 3095
+    }
+}

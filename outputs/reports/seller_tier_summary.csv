@@ -1,0 +1,5 @@
+tier,seller_count,avg_revenue,total_revenue,avg_orders,avg_review,avg_delivery_days,avg_late_pct,avg_score
+Bronze,39,691.82,26981.17,1.51,0.95,36.82,98.42,19.26
+Silver,2514,3066.37,7708864.87,23.75,3.82,11.2,7.1,43.09
+Gold,533,8150.63,4344286.98,54.48,4.87,9.52,0.97,50.81
+Platinum,9,167945.63,1511510.68,1244.67,4.07,11.78,7.15,79.35
