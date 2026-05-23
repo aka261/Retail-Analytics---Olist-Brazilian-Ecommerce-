@@ -5,5 +5,8 @@ __pycache__/
 .env
 logs/
 data/raw/
+data/processed/
+data/warehouse/
 database/
 *.db
+outputs/plots/
