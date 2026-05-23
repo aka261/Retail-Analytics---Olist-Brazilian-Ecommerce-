@@ -2,8 +2,9 @@
 
 End-to-end Business Intelligence and Data Analytics project built on the Olist Brazilian E-Commerce dataset. Covers ETL pipeline, SQL analysis, EDA, advanced analytics, machine learning and automated reporting.
 
-**Please run the flask template
-URLPagehttp://127.0.0.1:5000Overview + KPIs
+**Please run the flask template - You will be directed to the URL and then Ctl + link
+
+http://127.0.0.1:5000Overview + KPIs
 
 http://127.0.0.1:5000/sqlAll SQL tables
 
