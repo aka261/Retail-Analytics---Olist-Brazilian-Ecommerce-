@@ -4,9 +4,13 @@ End-to-end Business Intelligence and Data Analytics project built on the Olist B
 
 **Please run the flask template
 URLPagehttp://127.0.0.1:5000Overview + KPIs
+
 http://127.0.0.1:5000/sqlAll SQL tables
+
 http://127.0.0.1:5000/plotsAll plots with filter
+
 http://127.0.0.1:5000/reportsDownload PDF + Excel
+
 **
 ---
 
